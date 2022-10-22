@@ -6,15 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
-<body>
-    <input type="button" onclick="btnClicked()" value="click">
+<body style="margin: 0px; overflow: hidden; background-color: lightblue;">
+    <canvas id="canvas" style="width: 100vw; height: 100vh;"></canvas>
 </body>
-<script>
-    let fileHandle;
-    async function btnClicked() {
-        [fileHandle] = await window.showOpenFilePicker();
-        const file = await fileHandle.getFile();
-        console.log(await file.text())
-    }
-</script>
+<script src="main.js"></script>
 </html>

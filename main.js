@@ -1,101 +1,33 @@
-const canvas = document.getElementById("canvas");
-const ctx = canvas.getContext("2d");
-const circleArray = [];
-const circleAmount = 1;
+const spaceBetweenRectangles = 50;
 
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
-
-class Circle {
-  constructor(x, y, radius) {
-    this.x = x;
-    this.y = y;
-    this.radius = radius;
-    this.up = getRandomBoolean(50);
-    this.right = getRandomBoolean(50);
-    this.color = "lightcoral";
-    this.speed = 1;
-  }
-}
-
-for (let i = 0; i < circleAmount; i++) {
-  circleArray.push(
-    new Circle(
-      getRandomArbitrary(0, canvas.clientWidth),
-      getRandomArbitrary(0, canvas.clientHeight),
-      getRandomArbitrary(25, 100)
-    )
-  );
+function setup() {
+  createCanvas(windowHeight, windowHeight);
+  background(0, 100, 200);
 }
 
 function draw() {
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-
-  circleArray.forEach((circle) => {
-    drawCircle(circle.x, circle.y, circle.radius, circle.color);
-  });
+  for (let i = 0; i < 3; i++) {
+    for (let l = 0; l < 3; l++) {
+      circle(
+        (height / 3) * i + height / 3 / 2,
+        (height / 3) * l + height / 3 / 2,
+        height / 3 - spaceBetweenRectangles
+      );
+    }
+  }
 }
 
-function frame() {
-  circleArray.forEach((circle) => {
-    switch (circle.x) {
-      case 0:
-        circle.right = true;
-        break;
-      case canvas.width:
-        circle.right = false;
-        break;
-    }
+function mousePressed() {
+  if (
+    dist(mouseX, mouseY, width / 3 + width / 3 / 2, width / 3 + width / 3 / 2) <
+    (height / 3 - spaceBetweenRectangles) / 2
+  ) {
+    console.log("hello");
+  }
+}
 
-    switch (circle.y) {
-      case 0:
-        circle.up = true;
-        break;
-      case canvas.height:
-        circle.up = false;
-        break;
-    }
-
-    switch (circle.right) {
-      case true:
-        circle.x += circle.speed;
-        break;
-      case false:
-        circle.x -= circle.speed;
-        break;
-    }
-
-    switch (circle.up) {
-      case true:
-        circle.y += circle.speed;
-        break;
-      case false:
-        circle.y -= circle.speed;
-        break;
-    }
-  });
-
+function windowResized() {
+  resizeCanvas(windowHeight, windowHeight);
+  background(0, 100, 200);
   draw();
 }
-
-function getRandomArbitrary(min, max) {
-  return Math.floor(Math.random() * (max - min) + min);
-}
-
-function getRandomBoolean(prop) {
-  return Math.random() < prop / 100;
-}
-
-function drawCircle(x, y, radius, color) {
-  ctx.beginPath();
-  ctx.arc(x, y, radius, 0, 2 * Math.PI);
-  ctx.fillStyle = color;
-  ctx.lineWidth = 16;
-  ctx.fill();
-  ctx.stroke();
-}
-
-draw();
-setInterval(frame, 5);
-window.addEventListener("resize", draw);
